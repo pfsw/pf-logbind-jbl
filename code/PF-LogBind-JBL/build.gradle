@@ -1,0 +1,38 @@
+apply plugin: 'java'
+
+def includePath = project.pfswGradleIncludePath // usually specified in $GRADLE_USER_HOME/gradle.properties
+
+version = '1.0.0'
+archivesBaseName = "pf-logbind-jbl"
+
+ext {
+  javaVersion = '1.6'
+  pfLoggingVersion = '3.1.0'
+  jblVersion = '3.3.1.Final'
+  
+  javaModuleNameSuffix = 'logbind.jbl'
+}
+
+apply from: "${includePath}/common/ext-variables.gradle"
+apply from: "${includePath}/common/repositories.gradle"
+apply from: "${includePath}/java/java-6-compile.gradle"
+apply from: "${includePath}/java/java-compatibility.gradle"
+apply from: "${includePath}/java/publishing-java-full.gradle"
+
+dependencies {
+  compileOnly group: group, name: 'pf-logging', version: pfLoggingVersion
+  compileOnly group: 'org.jboss.logging', name: 'jboss-logging', version: jblVersion
+  
+  testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile group: group, name: 'pf-logging', version: pfLoggingVersion
+  testRuntime group: 'org.jboss.logging', name: 'jboss-logging', version: jblVersion
+  testRuntime group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.3'
+}
+
+test {
+  systemProperty 'org.pfsw.logging.binding', 'JBL'
+}
+
+wrapper { gradleVersion = '6.3' }
+
+println "${project.name} ${project.version} (autoModuleName: ${autoModuleName})"
