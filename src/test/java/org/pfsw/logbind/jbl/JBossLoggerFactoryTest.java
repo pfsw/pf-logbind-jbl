@@ -1,9 +1,9 @@
 package org.pfsw.logbind.jbl;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.pfsw.logbind.jbl.JBossLoggerAdapter;
 import org.pfsw.logbind.jbl.testhelper.UnitTestHelper;
 import org.pfsw.logging.Logger;
 import org.pfsw.logging.Logger2;
@@ -47,7 +47,7 @@ public class JBossLoggerFactoryTest
   {
     Logger logger = LoggerFactoryProvider.getLoggerFactory().createLogger();
     
-    assertTrue(logger instanceof JBossLoggerAdapter);
+    assertThat(logger instanceof JBossLoggerAdapter, is(true));
     assertEquals("", logger.getName());
     assertFalse(logger.isLoggingDebugs());
     assertFalse(logger.isLoggingInfos());
