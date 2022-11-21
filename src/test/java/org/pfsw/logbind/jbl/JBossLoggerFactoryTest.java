@@ -1,7 +1,7 @@
 package org.pfsw.logbind.jbl;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.pfsw.logbind.jbl.testhelper.UnitTestHelper;
@@ -20,12 +20,12 @@ public class JBossLoggerFactoryTest
   {
     Logger logger = LoggerFactoryProvider.getLogger("test1");
 
-    assertTrue(logger instanceof JBossLoggerAdapter);
-    assertEquals("test1", logger.getName());
-    assertFalse(logger.isLoggingDebugs());
-    assertTrue(logger.isLoggingInfos());
-    assertTrue(logger.isLoggingWarnings());
-    assertTrue(logger.isLoggingErrors());
+    assertThat(logger instanceof JBossLoggerAdapter, is(true));
+    assertThat(logger.getName(), is("test1"));
+    assertThat(logger.isLoggingDebugs(), is(false));
+    assertThat(logger.isLoggingInfos(), is(true));
+    assertThat(logger.isLoggingWarnings(), is(true));
+    assertThat(logger.isLoggingErrors(), is(true));
     logger.logInfo("Unittest <{0}>' was successful", "test_binding__logger()");
   }
 
@@ -34,11 +34,11 @@ public class JBossLoggerFactoryTest
   {
     Logger2 logger = LoggerFactoryProvider.getLogger2("test2");
 
-    assertEquals("test2", logger.getLoggerName());
-    assertFalse(logger.isDebugEnabled());
-    assertFalse(logger.isInfoEnabled());
-    assertTrue(logger.isWarnEnabled());
-    assertTrue(logger.isErrorEnabled());
+    assertThat(logger.getLoggerName(), is("test2"));
+    assertThat(logger.isDebugEnabled(), is(false));
+    assertThat(logger.isInfoEnabled(), is(false));
+    assertThat(logger.isWarnEnabled(), is(true));
+    assertThat(logger.isErrorEnabled(), is(true));
     logger.warnf("Unittest '%s' was successful", "test_binding__logger2()");
   }
 
@@ -46,16 +46,16 @@ public class JBossLoggerFactoryTest
   public void test_binding__root_logger()
   {
     Logger logger = LoggerFactoryProvider.getLoggerFactory().createLogger();
-    
+
     assertThat(logger instanceof JBossLoggerAdapter, is(true));
-    assertEquals("", logger.getName());
-    assertFalse(logger.isLoggingDebugs());
-    assertFalse(logger.isLoggingInfos());
-    assertFalse(logger.isLoggingWarnings());
-    assertTrue(logger.isLoggingErrors());
+    assertThat(logger.getName(), is(""));
+    assertThat(logger.isLoggingDebugs(), is(false));
+    assertThat(logger.isLoggingInfos(), is(false));
+    assertThat(logger.isLoggingWarnings(), is(false));
+    assertThat(logger.isLoggingErrors(), is(true));
     logger.logError("Unittest {0} was successful", "test_binding__root_logger()");
   }
-  
+
   @Test
   public void test_log_all_levels()
   {
